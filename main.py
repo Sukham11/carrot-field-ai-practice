@@ -30,7 +30,7 @@ def view():
 
 # this endpount gives spcific data of carrot filed instead of all data 
 @app.get('/carrot_field_sample/{field_id}')
-def view_patient(field_id: str):
+def view_fields(field_id: str):
     # load all the carrots 
     data = load_data()
 
@@ -39,4 +39,16 @@ def view_patient(field_id: str):
         return field
      
     return {'error' : 'Carrot field not found'}
+
+# this endpoint gives data of fields under observation 
+@app.get('/carrot_field_sample/{field_id}')
+def view_observations(field_id: str):
+    # load all the fields 
+    data = load_data()
+
+    for observations in data["observations"]:
+        if observations["field_id"] == field_id:
+            return observations
+
+    return {'error' : 'no observation for given carrot field. TRY AGAIN'}    
 
