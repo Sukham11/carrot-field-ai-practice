@@ -34,6 +34,9 @@ def view_patient(field_id: str):
     # load all the carrots 
     data = load_data()
 
-    if field_id in data:
-        return data[field_id]
+    for field in data["fields"]:
+     if field["field_id"] == field_id:
+        return field
+     
     return {'error' : 'Carrot field not found'}
+
