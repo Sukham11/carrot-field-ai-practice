@@ -1,6 +1,6 @@
 import json
 
-from fastapi import FastAPI, Path , HTTPException
+from fastapi import FastAPI, Path , HTTPException, Query
 
 app = FastAPI()
 
@@ -54,4 +54,22 @@ def view_observations(field_id: str = Path(..., description="Field id of the car
        #return {"error: no observation found. TRY AGAIN!"}
        raise HTTPException(status_code=404, detail='No oberservation found.TRY AGIAN!') # raise stauts code for error message 
     return (result) 
+
+# use query function to sort data based on some columns     
+@app.get('/sort')
+def sort_patients(sort_by: str = Query(..., description='sort on the basis of carrots_inspected, discoloration_estimate, observation_date'), order: str= Query('asc', description='sort in asc or desc order') ):
+    valid_fields = ['carrots_inspected', 'observation_date', 'discolored_carrots_estimate']
+
+    if sort_by not in valid_fields:
+        raise HTTPException(status_code=400, detail=f"Invalid field select from {valid_fields}")
+
+    if order not in ['asc' , 'desc']:
+        raise HTTPException(status_code=400, detail ='Invalid order select between asc or desc')
+
+    data = load_data()
+
+    sort_order = True if order=='desc' else  False
     
+    sorted_data = sorted(data.values(), key=lambda x:x.ge(sort_by, 0), reverse=False)
+
+    return sorted_data
