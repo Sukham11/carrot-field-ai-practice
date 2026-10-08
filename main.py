@@ -41,14 +41,15 @@ def view_fields(field_id: str):
     return {'error' : 'Carrot field not found'}
 
 # this endpoint gives data of fields under observation 
-@app.get('/carrot_field_sample/{field_id}')
+@app.get('/observations/{field_id}')
 def view_observations(field_id: str):
     # load all the fields 
     data = load_data()
-
+    result = []  # create list to store all the observations
     for observations in data["observations"]:
         if observations["field_id"] == field_id:
-            return observations
+            result.append(observations)  # add to list if field id matches
 
-    return {'error' : 'no observation for given carrot field. TRY AGAIN'}    
-
+    if not result : # if no field id matches and nothing in the list
+       return {"error: no observation found. TRY AGAIN!"}
+    return (result) 
