@@ -1,6 +1,6 @@
 import json
 
-from fastapi import FastAPI, Path
+from fastapi import FastAPI, Path , HTTPException
 
 app = FastAPI()
 
@@ -51,6 +51,7 @@ def view_observations(field_id: str = Path(..., description="Field id of the car
             result.append(observations)  # add to list if field id matches
 
     if not result : # if no field id matches and nothing in the list
-       return {"error: no observation found. TRY AGAIN!"}
+       #return {"error: no observation found. TRY AGAIN!"}
+       raise HTTPException(status_code=404, detail='No oberservation found.TRY AGIAN!') # raise stauts code for error message 
     return (result) 
     
