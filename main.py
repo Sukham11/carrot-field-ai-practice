@@ -1,6 +1,6 @@
 import json
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Path
 
 app = FastAPI()
 
@@ -42,7 +42,7 @@ def view_fields(field_id: str):
 
 # this endpoint gives data of fields under observation 
 @app.get('/observations/{field_id}')
-def view_observations(field_id: str):
+def view_observations(field_id: str = Path(..., description="Field id of the carrots in the db", example='Field001')):
     # load all the fields 
     data = load_data()
     result = []  # create list to store all the observations
@@ -53,3 +53,4 @@ def view_observations(field_id: str):
     if not result : # if no field id matches and nothing in the list
        return {"error: no observation found. TRY AGAIN!"}
     return (result) 
+    
