@@ -9,16 +9,14 @@ app = FastAPI()
 
 class Carrots(BaseModel):
 
-    observation_id: Annotated[str, Field(..., description='id of observed carrots')]
+    observation_id: Annotated[str, Field(..., description='id of observed carrots', example= 'OBS-001')]
     carrots_inspected: Annotated[int, Field(..., ge=0, description='number of carrots inspected')]
     row_id: Annotated[str, Field(..., description='Number of the row the carrot is from in the field', example= 'ROW-02')]
     field_id: Annotated[str, Field(..., description='field number for carrots', example= 'FIELD-001')]
-    condiiton: Annotated[str, Field(..., description='tells the conditions of carrot roots or leaves')]
+    condition: Annotated[str, Field(..., description='tells the conditions of carrot roots or leaves')]
     description: Annotated[str, Field(..., description='decsibes the condiiton in lttle more detail')]
     severity: Annotated[Literal['none', 'low', "Moderate", "high"], Field(..., description="tells how sever carrt condition is")]
-    growht_stage: Annotated[str, Field(..., description='growth stage of the field')]
     
-
 # this function loads the data from the json file
 def load_data():
     with open('carrot_field_sample.json', 'r') as f:
@@ -98,15 +96,27 @@ def create_observation(observation: Carrots):
 
     #load existing data
     data = load_data()
-    
-    #check if the carrot exist already
-    if observation.observation_id in data:
-        raise HTTPException(staus_code=400, detail="Carrot observation already exists")
+
+    #check if the field exist 
+    field_found = False
+
+    for field in data["fields"]:
+        if field["field_id"] == observation.field_id:
+            field_found = True
+            break
+
+        if not field_found:
+            raise HTTPException(status_code=404, detail="Field does not exist")
+        
+    #check if the carrot observation exist already
+    for existing in data["observations"]:
+        if existing["observation_id"] == observation.observation_id:
+            raise HTTPException(status_code=400, detail="Carrot observation already exists")
     
     #new observation add to database
-    data[observation.id] = observation.model_dump(exclude=["observation_id"])
+    data["observations"].append(observation.model_dump())
 
     #save into json file 
-    save_data(data)
+    save_data(data["observation"])
 
     return JSONResponse(status_code=201, content={'message':"observation created successfully"})
