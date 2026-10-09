@@ -156,7 +156,7 @@ def update_observation(observation_id: str, observationUpdate: observation_updat
 
     raise HTTPException(status_code=404, detail="observation not found")
 
-@app.delete('/delete/observation_id')
+@app.delete('/delete/{observation_id}')
 def delete_observation(observation_id: str):
 
     #load data
@@ -164,7 +164,7 @@ def delete_observation(observation_id: str):
 
     for observations in data['observations']:
         if observations['observation_id'] == observation_id:
-            del observations[observation_id]
+            data['observations'].remove(observations)
 
             save_data(data)
 

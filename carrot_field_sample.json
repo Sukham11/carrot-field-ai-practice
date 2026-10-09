@@ -838,15 +838,6 @@
             "status": "monitor",
             "source": "manual_sample_observation",
             "is_sample_data": true
-        },
-        {
-            "observation_id": "OBS-052",
-            "carrots_inspected": 0,
-            "row_id": "ROW-02",
-            "field_id": "FIELD-001",
-            "condition": "good",
-            "description": "good",
-            "severity": "none"
         }
     ]
 }
