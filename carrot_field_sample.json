@@ -46,11 +46,13 @@
             "description": "Yellowing observed on carrot foliage",
             "severity": "moderate",
             "affected_plants_estimate": 14,
-            "carrots_inspected": 117,
+            "carrots_inspected": 5,
             "discolored_carrots_estimate": 3,
-            "status": "needs_review",
+            "status": "checked",
             "source": "manual_sample_observation",
-            "is_sample_data": true
+            "is_sample_data": true,
+            "discolored_carrots": 2,
+            "affected_carrots": 3
         },
         {
             "observation_id": "OBS-002",
@@ -62,11 +64,12 @@
             "description": "Small dark spots observed on leaves",
             "severity": "high",
             "affected_plants_estimate": 3,
-            "carrots_inspected": 134,
+            "carrots_inspected": 1,
             "discolored_carrots_estimate": 6,
-            "status": "unconfirmed",
+            "status": "checked",
             "source": "manual_sample_observation",
-            "is_sample_data": true
+            "is_sample_data": true,
+            "discolored_carrots": 1
         },
         {
             "observation_id": "OBS-003",

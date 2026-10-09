@@ -76,7 +76,7 @@ def view_fields(field_id: str):
 
 # this endpoint gives data of fields under observation 
 @app.get('/observations/{field_id}')
-def view_observations(field_id: str = Path(..., description="Field id of the carrots in the db", example='Field001')):
+def view_observations(field_id: str = Path(..., description="Field id of the carrots in the db", examples='Field001')):
     # load all the fields 
     data = load_data()
     result = []  # create list to store all the observations
@@ -145,15 +145,33 @@ def update_observation(observation_id: str, observationUpdate: observation_updat
 
     for observations in data['observations']:
         if observations['observation_id'] == observation_id:
-           raise HTTPException(status_code=404, detail="observation not found")
+            updated_observation_info = observationUpdate.model_dump(exclude_unset=True)
+            for key, value in updated_observation_info.items():
+                observations[key] = value
 
-    existing_observation_info = observations[observation_id]
+            save_data(data)
 
-    updated_observation_info = observationUpdate.model_dump(exclude_unset=True)
+            return JSONResponse(status_code=201, content={'message':"observation updated successfully"})
 
-    for key, value in updated_observation_info.items():
-        existing_observation_info[key] = value
 
-    observations[observation_id] = existing_observation_info
+    raise HTTPException(status_code=404, detail="observation not found")
+
+@app.delete('/delete/observation_id')
+def delete_observation(observation_id: str):
+
+    #load data
+    data = load_data()
+
+    for observations in data['observations']:
+        if observations['observation_id'] == observation_id:
+            del observations[observation_id]
+
+            save_data(data)
+
+            return JSONResponse(status_code=200, content={'message':"observation deleted"})
+
+    raise HTTPException(status_code=404, detail="observation not found")
+
+    
                        
 
