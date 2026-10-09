@@ -1,8 +1,20 @@
 import json
 
-from fastapi import FastAPI, Path , HTTPException, Query
+from fastapi import FastAPI, Path , HTTPException, Query # type: ignore
+from pydantic import BaseModel, Field # type: ignore
+from typing import Annotated, Literal
 
 app = FastAPI()
+
+class Carrots(BaseModel):
+
+    carrots_inspected: Annotated[int, Field(..., ge=0, description='number of carrots inspected')]
+    row_id: Annotated[str, Field(..., description='Number of the row the carrot is from in the field', example= 'ROW-02')]
+    field_id: Annotated[str, Field(..., description='field number for carrots', example= 'FIELD-001')]
+    condiiton: Annotated[str, Field(..., description='tells the conditions of carrot roots or leaves')]
+    description: Annotated[str, Field(..., description='decsibes the condiiton in lttle more detail')]
+    severity: Annotated[Literal['none', 'low', "Moderate", "high"], Field(..., description="tells how sever carrt condition is")]
+    growht_stage: Annotated[str, Field(..., description='growth stage of the field')]
 
 # this function loads the data from the json file
 def load_data():
@@ -73,3 +85,4 @@ def sort_patients(sort_by: str = Query(..., description='sort on the basis of ca
     sorted_data = sorted(data["observations"], key=lambda x:x.get(sort_by, 0), reverse=sort_order)
 
     return sorted_data
+
