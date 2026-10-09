@@ -1,6 +1,7 @@
 import json
 
 from fastapi import FastAPI, Path , HTTPException, Query # type: ignore
+from fastapi.responses import JSONResponse # type: ignore
 from pydantic import BaseModel, Field # type: ignore
 from typing import Annotated, Literal
 
@@ -8,6 +9,7 @@ app = FastAPI()
 
 class Carrots(BaseModel):
 
+    observation_id: Annotated[str, Field(..., description='id of observed carrots')]
     carrots_inspected: Annotated[int, Field(..., ge=0, description='number of carrots inspected')]
     row_id: Annotated[str, Field(..., description='Number of the row the carrot is from in the field', example= 'ROW-02')]
     field_id: Annotated[str, Field(..., description='field number for carrots', example= 'FIELD-001')]
@@ -15,6 +17,7 @@ class Carrots(BaseModel):
     description: Annotated[str, Field(..., description='decsibes the condiiton in lttle more detail')]
     severity: Annotated[Literal['none', 'low', "Moderate", "high"], Field(..., description="tells how sever carrt condition is")]
     growht_stage: Annotated[str, Field(..., description='growth stage of the field')]
+    
 
 # this function loads the data from the json file
 def load_data():
@@ -22,7 +25,11 @@ def load_data():
         data = json.load(f)
 
     return data
-    
+
+def save_data(data):
+    with open('carrot_field_sample.json', 'w') as f:
+        json.dump(data)
+
 # this is endpoint using get method
 @app.get("/")
 def hello():
@@ -86,3 +93,20 @@ def sort_patients(sort_by: str = Query(..., description='sort on the basis of ca
 
     return sorted_data
 
+@app.post('/create')
+def create_observation(observation: Carrots):
+
+    #load existing data
+    data = load_data()
+    
+    #check if the carrot exist already
+    if observation.observation_id in data:
+        raise HTTPException(staus_code=400, detail="Carrot observation already exists")
+    
+    #new observation add to database
+    data[observation.id] = observation.model_dump(exclude=["observation_id"])
+
+    #save into json file 
+    save_data(data)
+
+    return JSONResponse(status_code=201, content={'message':"observation created successfully"})
