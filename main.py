@@ -172,6 +172,3 @@ def delete_observation(observation_id: str):
 
     raise HTTPException(status_code=404, detail="observation not found")
 
-    
-                       
-
