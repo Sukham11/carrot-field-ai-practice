@@ -3,7 +3,7 @@ import json
 from fastapi import FastAPI, Path , HTTPException, Query # type: ignore
 from fastapi.responses import JSONResponse # type: ignore
 from pydantic import BaseModel, Field # type: ignore
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Optional
 
 app = FastAPI()
 
@@ -16,6 +16,23 @@ class Carrots(BaseModel):
     condition: Annotated[str, Field(..., description='tells the conditions of carrot roots or leaves')]
     description: Annotated[str, Field(..., description='decsibes the condiiton in lttle more detail')]
     severity: Annotated[Literal['none', 'low', "Moderate", "high"], Field(..., description="tells how sever carrt condition is")]
+
+class observation_update(BaseModel):
+
+    carrots_inspected: Annotated[Optional[int], Field(ge=0, description='number of carrots inspected', default = None)]
+    row_id: Annotated[Optional[str], Field(description='Number of the row the carrot is from in the field', example= 'ROW-02', default = None)]
+    field_id: Annotated[Optional[str], Field(description='field number for carrots', example= 'FIELD-001', default = None)]
+    condition: Annotated[Optional[str], Field(description='tells the conditions of carrot roots or leaves', default = None)]
+    description: Annotated[Optional[str], Field(description='decsibes the condiiton in lttle more detail', default = None)]
+    severity: Annotated[Optional[Literal['none', 'low', "Moderate", "high"]], Field( description="tells how sever carrt condition is", default = None)]
+    observation_date: Annotated[Optional[str], Field(default=None)]
+    crop: Annotated[Optional[str], Field(default=None)]
+    status: Annotated[Optional[str], Field(default=None)]
+    source: Annotated[Optional[str], Field(default=None)]
+    discolored_carrots: Annotated[Optional[int], Field(default=None, ge=0)]
+    affected_carrots: Annotated[Optional[int], Field(default=None, ge=0)]
+    sample_data: Annotated[Optional[bool], Field(default=True)]
+                    
     
 # this function loads the data from the json file
 def load_data():
@@ -120,3 +137,23 @@ def create_observation(observation: Carrots):
     save_data(data)
 
     return JSONResponse(status_code=201, content={'message':"observation created successfully"})
+
+@app.put('/edit/{observation_id}')
+def update_observation(observation_id: str, observationUpdate: observation_update ):
+
+    data = load_data()
+
+    for observations in data['observations']:
+        if observations['observation_id'] == observation_id:
+           raise HTTPException(status_code=404, detail="observation not found")
+
+    existing_observation_info = observations[observation_id]
+
+    updated_observation_info = observationUpdate.model_dump(exclude_unset=True)
+
+    for key, value in updated_observation_info.items():
+        existing_observation_info[key] = value
+
+    observations[observation_id] = existing_observation_info
+                       
+
