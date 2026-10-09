@@ -26,7 +26,7 @@ def load_data():
 
 def save_data(data):
     with open('carrot_field_sample.json', 'w') as f:
-        json.dump(data)
+        json.dump(data, f, indent=4)
 
 # this is endpoint using get method
 @app.get("/")
@@ -117,6 +117,6 @@ def create_observation(observation: Carrots):
     data["observations"].append(observation.model_dump())
 
     #save into json file 
-    save_data(data["observation"])
+    save_data(data)
 
     return JSONResponse(status_code=201, content={'message':"observation created successfully"})
