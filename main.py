@@ -248,6 +248,14 @@ def predict_image(file: UploadFile = File(...)):
         # Draw class and confidence label
         label = f"{class_name}: {confidence * 100:.1f}"
 
+        # Add a dark background behind the label
+        text_box = draw.textbbox((x1, max(0, y1 - 18)), label)
+
+        draw.rectangle(
+            text_box,
+            fill="black"
+        )
+
         draw.text(
             (x1, max(0, y1 - 15)),
             label,
@@ -262,6 +270,8 @@ def predict_image(file: UploadFile = File(...)):
         "prediction_id": prediction_id,
         "filename": file.filename,
         "model": "pre-lsufn/1",
+        "confidence_threshold": 0.50,
+        "overlap_threshold": 0.50,
         "total_detections": len(predictions),
         "original_image": f"/prediction-image/{prediction_id}/original",
         "annotated_image": f"/prediction-image/{prediction_id}/annotated",
