@@ -1,6 +1,9 @@
 import json
 import os
 import tempfile
+import uuid
+from pathlib import path 
+from PIL import Image, ImageDraw
 from fastapi import FastAPI, Path , HTTPException, Query, UploadFile, File # type: ignore
 from fastapi.responses import JSONResponse # type: ignore
 from pydantic import BaseModel, Field # type: ignore
@@ -180,6 +183,24 @@ def predict_image(file: UploadFile = File(...)):
     # check if uploaded file is image
     if file.content_type not in ['image/jpeg', 'image/png']:
         raise HTTPException(status_code=400, detail="Please upload a JPG or PNG image")
+    
+    image_bytes = file.file.read()
+    try:
+        from io import BytesIO
+        image = Image.open(BytesIO(image_bytes)).convert("RGB")
+    except Exception:
+        raise HTTPException(status_code=400, detail='Invalid image file')
+
+    output_dir = Path("prediction_results")
+    output_dir.mkdir(exist_ok=True)
+
+    prediction_id = uuid.uuid4().hex
+
+    original_path = output_dir / f"{prediction_id}_original.jpg"
+    annotated_path = output_dir / f"{prediction_id}_annotated,jpg"
+    json_path = output_dir / f"{prediction_id}.json"
+
+    image.save(original_path)
 
     # connect to roboflow model 
     client = InferenceHTTPClient(
@@ -189,18 +210,90 @@ def predict_image(file: UploadFile = File(...)):
         InferenceConfiguration(api_key_transport="header" ) # header-based auth (inference v1.5.0+)
     )  
  
-    # save the uploaded image temporarily
-    with tempfile.NamedTemporaryFile(suffix=".jpg") as temp:
-        temp.write(file.file.read())
-        temp.flush()
-        # send image to roboflow
-        result = client.infer(temp.name, model_id="pre-lsufn/1")
+    # send image to roboflow
+    result = client.infer(str(original_path), model_id="pre-lsufn/1")
 
-    # return the prediction 
+    # save prediction JSON
+    with open(json_path, "w") as f:
+        json.dump(result, f, indent=4)
+
+    #  Draw bounding boxes on the image
+    draw = ImageDraw.Draw(image)
+
+    predictions = result.get("predictions", [])
+
+    for prediction in predictions:
+
+        x = prediction["x"]
+        y = prediction["y"]
+        width = prediction["width"]
+        height = prediction["height"]
+
+        confidence = prediction.get("confidence", 0)
+        class_name = prediction.get("class", "unknown")
+
+        # Convert center coordinates to rectangle corners
+        x1 = x - width / 2
+        y1 = y - height / 2
+        x2 = x + width / 2
+        y2 = y + height / 2
+
+        # Draw bounding box
+        draw.rectangle(
+            [(x1, y1), (x2, y2)],
+            outline="red",
+            width=3
+        )
+
+        # Draw class and confidence label
+        label = f"{class_name}: {confidence:.2f}"
+
+        draw.text(
+            (x1, max(0, y1 - 15)),
+            label,
+            fill="red"
+        )
+
+    # Save image with bounding boxes
+    image.save(annotated_path)
+
+    # Return prediction information
     return {
-        "filename" : file.filename,
+        "prediction_id": prediction_id,
+        "filename": file.filename,
         "model": "pre-lsufn/1",
-        "predictions": result
-    }  
+        "total_detections": len(predictions),
+        "original_image": f"/prediction-image/{prediction_id}/original",
+        "annotated_image": f"/prediction-image/{prediction_id}/annotated",
+        "json_file": str(json_path),
+        "predictions": predictions
+    }
 
+@app.get("/prediction-image/{prediction_id}/{image_type}")
+def get_prediction_image(prediction_id: str, image_type: str):
+
+    if image_type not in ["original", "annotated"]:
+        raise HTTPException(
+            status_code=400,
+            detail="Image type must be original or annotated"
+        )
+
+    # Prevent invalid IDs from being used as file paths
+    try:
+        uuid.UUID(hex=prediction_id)
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid prediction ID"
+        )
+
+    image_path = Path("prediction_results") / f"{prediction_id}_{image_type}.jpg"
+
+    if not image_path.is_file():
+        raise HTTPException(
+            status_code=404,
+            detail="Image not found"
+        )
+
+    return FileResponse(image_path, media_type="image/jpeg")
 
