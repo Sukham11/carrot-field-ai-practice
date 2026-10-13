@@ -209,7 +209,7 @@ def predict_image(file: UploadFile = File(...)):
          api_key=os.environ['ROBOFLOW_API_KEY']
     ).configure(
         InferenceConfiguration(api_key_transport="header" , confidence_threshold=0.10,
-        iou_threshold=0.90,
+        iou_threshold=0.70,
         max_detections=300,
         max_candidates=300 ) # header-based auth (inference v1.5.0+)
     )  
