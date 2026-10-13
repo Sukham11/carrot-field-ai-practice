@@ -2,10 +2,10 @@ import json
 import os
 import tempfile
 import uuid
-from pathlib import path 
+from pathlib import Path as FilePath
 from PIL import Image, ImageDraw
 from fastapi import FastAPI, Path , HTTPException, Query, UploadFile, File # type: ignore
-from fastapi.responses import JSONResponse # type: ignore
+from fastapi.responses import JSONResponse, FileResponse # type: ignore
 from pydantic import BaseModel, Field # type: ignore
 from typing import Annotated, Literal, Optional
 from inference_sdk import InferenceHTTPClient, InferenceConfiguration
@@ -127,7 +127,7 @@ def create_observation(observation: Carrots):
             field_found = True
             break
 
-        if not field_found:
+    if not field_found:
             raise HTTPException(status_code=404, detail="Field does not exist")
         
     #check if the carrot observation exist already
@@ -191,13 +191,13 @@ def predict_image(file: UploadFile = File(...)):
     except Exception:
         raise HTTPException(status_code=400, detail='Invalid image file')
 
-    output_dir = Path("prediction_results")
+    output_dir = FilePath("prediction_results")
     output_dir.mkdir(exist_ok=True)
 
     prediction_id = uuid.uuid4().hex
 
     original_path = output_dir / f"{prediction_id}_original.jpg"
-    annotated_path = output_dir / f"{prediction_id}_annotated,jpg"
+    annotated_path = output_dir / f"{prediction_id}_annotated.jpg"
     json_path = output_dir / f"{prediction_id}.json"
 
     image.save(original_path)
@@ -246,7 +246,7 @@ def predict_image(file: UploadFile = File(...)):
         )
 
         # Draw class and confidence label
-        label = f"{class_name}: {confidence:.2f}"
+        label = f"{class_name}: {confidence * 100:.1f}"
 
         draw.text(
             (x1, max(0, y1 - 15)),
@@ -287,7 +287,7 @@ def get_prediction_image(prediction_id: str, image_type: str):
             detail="Invalid prediction ID"
         )
 
-    image_path = Path("prediction_results") / f"{prediction_id}_{image_type}.jpg"
+    image_path = FilePath("prediction_results") / f"{prediction_id}_{image_type}.jpg"
 
     if not image_path.is_file():
         raise HTTPException(
