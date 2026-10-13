@@ -295,7 +295,8 @@ def predict_image(file: UploadFile = File(...)):
 
 @app.get("/prediction-image/{prediction_id}/{image_type}")
 def get_prediction_image(prediction_id: str, image_type: str):
-
+    
+    print("Received image_type:", repr(image_type), flush=True)
     if image_type not in ["original", "annotated"]:
         raise HTTPException(
             status_code=400,

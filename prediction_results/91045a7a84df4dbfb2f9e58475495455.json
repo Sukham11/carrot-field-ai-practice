@@ -1,0 +1,286 @@
+{
+    "inference_id": "d8e10390-2334-4f58-aede-c25b862139e4",
+    "time": 0.0521365636959672,
+    "resolved_model": {
+        "model_id": "pre-lsufn/1",
+        "model_package_id": "d9e17d96240d37f366490718373a0555",
+        "backend": "onnx",
+        "quantization": "fp32"
+    },
+    "image": {
+        "width": 546,
+        "height": 728
+    },
+    "predictions": [
+        {
+            "x": 286.0,
+            "y": 588.0,
+            "width": 168.0,
+            "height": 104.0,
+            "confidence": 0.9999006986618042,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "defa419d-19d3-473b-bd2a-bc4ed6487304"
+        },
+        {
+            "x": 46.5,
+            "y": 664.0,
+            "width": 93.0,
+            "height": 128.0,
+            "confidence": 0.9998767375946045,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "3cbdfe3c-b998-4403-985c-31da42b6a2c5"
+        },
+        {
+            "x": 466.0,
+            "y": 579.5,
+            "width": 56.0,
+            "height": 81.0,
+            "confidence": 0.9998106360435486,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "7484f988-75fd-4eaf-8318-4780222ca26a"
+        },
+        {
+            "x": 522.0,
+            "y": 572.0,
+            "width": 44.0,
+            "height": 98.0,
+            "confidence": 0.9989381432533264,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "96a10fad-9c50-482f-b910-6161f06af20d"
+        },
+        {
+            "x": 476.0,
+            "y": 575.0,
+            "width": 84.0,
+            "height": 144.0,
+            "confidence": 0.9988299012184143,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "92fdc0ff-5d86-4f8a-9e9b-a65db4159983"
+        },
+        {
+            "x": 36.5,
+            "y": 536.0,
+            "width": 69.0,
+            "height": 202.0,
+            "confidence": 0.99864262342453,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "71365f5f-6abb-4cb4-a5d6-837b1d8238f4"
+        },
+        {
+            "x": 286.5,
+            "y": 575.0,
+            "width": 141.0,
+            "height": 112.0,
+            "confidence": 0.9986171722412109,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "c74c6bff-de0e-4cfb-9c95-37ec74ab5910"
+        },
+        {
+            "x": 454.5,
+            "y": 467.0,
+            "width": 83.0,
+            "height": 134.0,
+            "confidence": 0.9962717294692993,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "10a30279-67b5-4bbb-bff4-84247434a3e7"
+        },
+        {
+            "x": 54.0,
+            "y": 678.0,
+            "width": 108.0,
+            "height": 100.0,
+            "confidence": 0.9949424862861633,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "d5e86aa6-fdc2-4cef-acd4-c5cda42c76cd"
+        },
+        {
+            "x": 454.0,
+            "y": 477.5,
+            "width": 86.0,
+            "height": 221.0,
+            "confidence": 0.9944174289703369,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "f6ae2708-3e0e-44fd-b3fc-cc27f335e586"
+        },
+        {
+            "x": 34.5,
+            "y": 500.0,
+            "width": 63.0,
+            "height": 240.0,
+            "confidence": 0.9933144450187683,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "ef5b17c3-78b6-440f-bdf9-566cb526909e"
+        },
+        {
+            "x": 369.5,
+            "y": 58.0,
+            "width": 131.0,
+            "height": 116.0,
+            "confidence": 0.9922656416893005,
+            "class": "0",
+            "class_id": 0,
+            "detection_id": "1240cb9b-356a-426b-8222-f3b3cbe91197"
+        },
+        {
+            "x": 476.0,
+            "y": 573.0,
+            "width": 74.0,
+            "height": 104.0,
+            "confidence": 0.9870560169219971,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "c9b89d68-bdc6-4de8-ac4b-c5ad0cc18d64"
+        },
+        {
+            "x": 49.5,
+            "y": 91.0,
+            "width": 99.0,
+            "height": 164.0,
+            "confidence": 0.973050057888031,
+            "class": "0",
+            "class_id": 0,
+            "detection_id": "7218734e-6c3e-4cb9-b0d9-cb8708041d26"
+        },
+        {
+            "x": 445.0,
+            "y": 57.5,
+            "width": 110.0,
+            "height": 115.0,
+            "confidence": 0.9567970633506775,
+            "class": "0",
+            "class_id": 0,
+            "detection_id": "0760834f-8ad6-48b1-979d-3d32e1fa0cba"
+        },
+        {
+            "x": 404.0,
+            "y": 54.0,
+            "width": 130.0,
+            "height": 108.0,
+            "confidence": 0.9519667029380798,
+            "class": "0",
+            "class_id": 0,
+            "detection_id": "f703e3f6-09cb-4a84-bfe2-3df6eaedeaf1"
+        },
+        {
+            "x": 39.0,
+            "y": 499.0,
+            "width": 76.0,
+            "height": 302.0,
+            "confidence": 0.9389737248420715,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "a3b1b5b1-6fe2-4365-affa-64a9755bfd6f"
+        },
+        {
+            "x": 456.0,
+            "y": 63.5,
+            "width": 68.0,
+            "height": 117.0,
+            "confidence": 0.9271391034126282,
+            "class": "0",
+            "class_id": 0,
+            "detection_id": "75937520-596a-427d-b66f-e9868979ea3f"
+        },
+        {
+            "x": 296.5,
+            "y": 589.5,
+            "width": 231.0,
+            "height": 165.0,
+            "confidence": 0.9062238931655884,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "209d2406-55b4-4d39-aabd-496356a1d892"
+        },
+        {
+            "x": 54.5,
+            "y": 690.0,
+            "width": 109.0,
+            "height": 74.0,
+            "confidence": 0.8858927488327026,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "a659f80e-6b08-4376-a170-d7c0f62cbfbc"
+        },
+        {
+            "x": 48.0,
+            "y": 80.5,
+            "width": 84.0,
+            "height": 161.0,
+            "confidence": 0.8170255422592163,
+            "class": "0",
+            "class_id": 0,
+            "detection_id": "e60ab0ca-1a2a-4564-bd5d-95e5ad1d722b"
+        },
+        {
+            "x": 428.5,
+            "y": 41.0,
+            "width": 93.0,
+            "height": 82.0,
+            "confidence": 0.8018847107887268,
+            "class": "0",
+            "class_id": 0,
+            "detection_id": "19804c1e-cc7a-4e17-b7d2-59274f66e034"
+        },
+        {
+            "x": 375.5,
+            "y": 44.5,
+            "width": 123.0,
+            "height": 89.0,
+            "confidence": 0.7937688827514648,
+            "class": "0",
+            "class_id": 0,
+            "detection_id": "50795869-62b0-47c6-92c0-84822a4276c2"
+        },
+        {
+            "x": 393.0,
+            "y": 40.0,
+            "width": 104.0,
+            "height": 78.0,
+            "confidence": 0.7352021932601929,
+            "class": "0",
+            "class_id": 0,
+            "detection_id": "ca997986-412d-412d-95e5-719a5a5a4bbd"
+        },
+        {
+            "x": 410.5,
+            "y": 39.5,
+            "width": 89.0,
+            "height": 77.0,
+            "confidence": 0.6906226873397827,
+            "class": "0",
+            "class_id": 0,
+            "detection_id": "8e351667-b517-490c-8e6a-d4cf3b6c85e1"
+        },
+        {
+            "x": 449.5,
+            "y": 43.5,
+            "width": 95.0,
+            "height": 87.0,
+            "confidence": 0.6569404602050781,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "a889a198-7399-491c-9d44-32e36376b987"
+        },
+        {
+            "x": 430.5,
+            "y": 49.0,
+            "width": 123.0,
+            "height": 98.0,
+            "confidence": 0.6326013803482056,
+            "class": "0",
+            "class_id": 0,
+            "detection_id": "74abb44a-8c68-4127-93cf-d045ddee62c9"
+        }
+    ]
+}
