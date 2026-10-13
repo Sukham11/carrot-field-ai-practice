@@ -179,7 +179,7 @@ def delete_observation(observation_id: str):
 def predict_image(file: UploadFile = File(...)):
     # check if uploaded file is image
     if file.content_type not in ['image/jpeg', 'image/png']:
-        raise HTTPException(source_code=400, detail="Please upload a JPG or PNG image")
+        raise HTTPException(status_code=400, detail="Please upload a JPG or PNG image")
 
     # connect to roboflow model 
     client = InferenceHTTPClient(
