@@ -1,0 +1,46 @@
+{
+    "inference_id": "bcfe1532-6a66-4e7c-9d98-e62b8b4ef08c",
+    "time": 0.0075467424467206,
+    "resolved_model": {
+        "model_id": "pre-lsufn/1",
+        "model_package_id": "d9e17d96240d37f366490718373a0555",
+        "backend": "onnx",
+        "quantization": "fp32"
+    },
+    "image": {
+        "width": 600,
+        "height": 450
+    },
+    "predictions": [
+        {
+            "x": 498.0,
+            "y": 422.5,
+            "width": 74.0,
+            "height": 55.0,
+            "confidence": 0.9950709342956543,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "12e393ac-2ff8-4318-b4e4-a9337d5cef50"
+        },
+        {
+            "x": 413.5,
+            "y": 234.0,
+            "width": 77.0,
+            "height": 56.0,
+            "confidence": 0.9916692972183228,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "05ca147a-82d2-4d4b-b042-b1b6db2c87ac"
+        },
+        {
+            "x": 178.5,
+            "y": 194.5,
+            "width": 77.0,
+            "height": 97.0,
+            "confidence": 0.5625842809677124,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "ae00c26e-e62c-4176-9823-ae9189055f79"
+        }
+    ]
+}

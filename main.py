@@ -188,6 +188,7 @@ def predict_image(file: UploadFile = File(...)):
     try:
         from io import BytesIO
         image = Image.open(BytesIO(image_bytes)).convert("RGB")
+        print("Uploaded image size:", image.size)
     except Exception:
         raise HTTPException(status_code=400, detail='Invalid image file')
 
@@ -207,11 +208,24 @@ def predict_image(file: UploadFile = File(...)):
          api_url="https://serverless.roboflow.com",
          api_key=os.environ['ROBOFLOW_API_KEY']
     ).configure(
-        InferenceConfiguration(api_key_transport="header" ) # header-based auth (inference v1.5.0+)
+        InferenceConfiguration(api_key_transport="header" , confidence_threshold=0.10,
+        iou_threshold=0.90,
+        max_detections=300,
+        max_candidates=300 ) # header-based auth (inference v1.5.0+)
     )  
  
     # send image to roboflow
     result = client.infer(str(original_path), model_id="pre-lsufn/1")
+    
+    print("Total predictions:", len(result.get("predictions", [])))
+    print("Response keys:", list(result.keys()),)
+    print("Resolved model:", result.get("resolved_model"), flush=True)
+
+    print("Detection confidences:", [
+       round(p.get("confidence", 0), 3)
+       for p in result.get("predictions", [])
+    ], flush=True)
+    print("Image information:", result.get("image"))
 
     # save prediction JSON
     with open(json_path, "w") as f:
@@ -270,7 +284,7 @@ def predict_image(file: UploadFile = File(...)):
         "prediction_id": prediction_id,
         "filename": file.filename,
         "model": "pre-lsufn/1",
-        "confidence_threshold": 0.50,
+        "confidence_threshold": 0.10,
         "overlap_threshold": 0.50,
         "total_detections": len(predictions),
         "original_image": f"/prediction-image/{prediction_id}/original",

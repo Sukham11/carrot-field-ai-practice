@@ -1,0 +1,56 @@
+{
+    "inference_id": "ec2c8715-72b8-4aa9-8b1c-f952fa89675a",
+    "time": 0.01105162687599659,
+    "resolved_model": {
+        "model_id": "pre-lsufn/1",
+        "model_package_id": "d9e17d96240d37f366490718373a0555",
+        "backend": "onnx",
+        "quantization": "fp32"
+    },
+    "image": {
+        "width": 600,
+        "height": 450
+    },
+    "predictions": [
+        {
+            "x": 411.0,
+            "y": 229.5,
+            "width": 68.0,
+            "height": 51.0,
+            "confidence": 0.9974888563156128,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "39654166-5fb0-468f-8c01-7e0b89068502"
+        },
+        {
+            "x": 580.5,
+            "y": 314.5,
+            "width": 35.0,
+            "height": 63.0,
+            "confidence": 0.9965466856956482,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "65475d34-14cd-4574-99d0-392835a47346"
+        },
+        {
+            "x": 498.0,
+            "y": 422.5,
+            "width": 74.0,
+            "height": 55.0,
+            "confidence": 0.9950709342956543,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "6468118f-e9b1-4195-8cb3-5fe4b97e1df5"
+        },
+        {
+            "x": 180.0,
+            "y": 188.0,
+            "width": 84.0,
+            "height": 94.0,
+            "confidence": 0.8101649880409241,
+            "class": "2",
+            "class_id": 2,
+            "detection_id": "90402df8-3681-4dcf-be9d-9ff6c9e48c0a"
+        }
+    ]
+}
