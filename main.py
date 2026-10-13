@@ -1,9 +1,11 @@
 import json
-
-from fastapi import FastAPI, Path , HTTPException, Query # type: ignore
+import os
+import tempfile
+from fastapi import FastAPI, Path , HTTPException, Query, UploadFile, File # type: ignore
 from fastapi.responses import JSONResponse # type: ignore
 from pydantic import BaseModel, Field # type: ignore
 from typing import Annotated, Literal, Optional
+from inference_sdk import InferenceHTTPClient, InferenceConfiguration
 
 app = FastAPI()
 
@@ -91,7 +93,7 @@ def view_observations(field_id: str = Path(..., description="Field id of the car
 
 # use query function to sort data based on some columns     
 @app.get('/sort')
-def sort_patients(sort_by: str = Query(..., description='sort on the basis of carrots_inspected, discoloration_estimate, observation_date'), order: str= Query('asc', description='sort in asc or desc order') ):
+def sort_observation(sort_by: str = Query(..., description='sort on the basis of carrots_inspected, discoloration_estimate, observation_date'), order: str= Query('asc', description='sort in asc or desc order') ):
     valid_fields = ['carrots_inspected', 'observation_date', 'discolored_carrots_estimate']
 
     if sort_by not in valid_fields:
@@ -171,4 +173,34 @@ def delete_observation(observation_id: str):
             return JSONResponse(status_code=200, content={'message':"observation deleted"})
 
     raise HTTPException(status_code=404, detail="observation not found")
+
+
+@app.post("/predict")
+def predict_image(file: UploadFile = File(...)):
+    # check if uploaded file is image
+    if file.content_type not in ['image/jpeg', 'image/png']:
+        raise HTTPException(source_code=400, detail="Please upload a JPG or PNG image")
+
+    # connect to roboflow model 
+    client = InferenceHTTPClient(
+         api_url="https://serverless.roboflow.com",
+         api_key=os.environ['ROBOFLOW_API_KEY']
+    ).configure(
+        InferenceConfiguration(api_key_transport="header" ) # header-based auth (inference v1.5.0+)
+    )  
+ 
+    # save the uploaded image temporarily
+    with tempfile.NamedTemporaryFile(suffix=".jpg") as temp:
+        temp.write(file.file.read())
+        temp.flush()
+        # send image to roboflow
+        result = client.infer(temp.name, model_id="pre-lsufn/1")
+
+    # return the prediction 
+    return {
+        "filename" : file.filename,
+        "model": "pre-lsufn/1",
+        "predictions": result
+    }  
+
 
