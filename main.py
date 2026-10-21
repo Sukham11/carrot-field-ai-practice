@@ -113,6 +113,7 @@ def sort_observation(sort_by: str = Query(..., description='sort on the basis of
 
     return sorted_data
 
+# this end point add new observation
 @app.post('/create')
 def create_observation(observation: Carrots):
 
@@ -143,6 +144,7 @@ def create_observation(observation: Carrots):
 
     return JSONResponse(status_code=201, content={'message':"observation created successfully"})
 
+# this endpoint update existing observations
 @app.put('/edit/{observation_id}')
 def update_observation(observation_id: str, observationUpdate: observation_update ):
 
@@ -161,6 +163,7 @@ def update_observation(observation_id: str, observationUpdate: observation_updat
 
     raise HTTPException(status_code=404, detail="observation not found")
 
+# this endpoint delete any existing observation
 @app.delete('/delete/{observation_id}')
 def delete_observation(observation_id: str):
 
@@ -177,7 +180,7 @@ def delete_observation(observation_id: str):
 
     raise HTTPException(status_code=404, detail="observation not found")
 
-
+# this endpoint input image and get back annoated image 
 @app.post("/predict")
 def predict_image(file: UploadFile = File(...)):
     # check if uploaded file is image
@@ -293,6 +296,7 @@ def predict_image(file: UploadFile = File(...)):
         "predictions": predictions
     }
 
+# this endpoint gives orginla or annotated image 
 @app.get("/prediction-image/{prediction_id}/{image_type}")
 def get_prediction_image(prediction_id: str, image_type: str):
     
