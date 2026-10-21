@@ -7,7 +7,7 @@ on:
       - main
   pull_request:
     branches:
-      - main:
+      - main
 
 jobs:
   test: 
@@ -16,7 +16,7 @@ jobs:
     steps:
       # step 1: check out the code from the repository 
       - name: checkout repository
-      uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       # step 2: set up python environment 
       - name: set up Python 
@@ -26,7 +26,7 @@ jobs:
 
       # step 3: install dependencies 
       - name: Install dependencies
-        run: pip install -r requirement.txt
+        run: pip install -r requirements.txt
 
       #step 4: check python syntax
       - name: check Python syntax
