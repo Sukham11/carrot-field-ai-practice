@@ -1,0 +1,34 @@
+name: FastAPI CI
+
+#trigger the workflow on any push to the main branch or pull request 
+on: 
+   push: 
+     branches:
+        - main
+   pull_request:
+      branches:
+        - main:
+
+jobs:
+  test: 
+    runs-on: ubuntu-latest
+
+    steps:
+      # step 1: check out the code from the repository 
+      - name: checkout repository
+      uses: actions/checkout@v4
+
+      # step 2: set up python environment 
+      - name: set up Python 
+        uses: actions/setup-python@v5
+        with: 
+          python-version: '3.11'
+
+      # step 3: install dependencies 
+      - name: Install dependencies
+        run: pip install -r requirement.txt
+
+      #step 4: check python syntax
+      - name: check Python syntax
+        run: python -m compileall -q main.py
+      
